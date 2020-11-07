@@ -55,4 +55,7 @@ Change necessary configurations by setting up configs.py
 
 Run train.py  
 
+Checking Tensorflow graphs
+--
+
 Check the graphs using : tensorboard --logdir=log
