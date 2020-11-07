@@ -252,6 +252,14 @@ def postprocess_boxes(pred_bbox, original_image, input_size, score_threshold):
 
     return np.concatenate([coors, scores[:, np.newaxis], classes[:, np.newaxis]], axis=-1)
 
+def calculate_distance(centroid_list):
+    print('centroid_list : ',centroid_list)
+    if len(centroid_list)==1:
+        pass
+    else:
+        rectangle_combo_list  = list(combinations(centroid,2))
+        return rectangle_combo_list
+        
 def detect_video(YoloV3, video_path, output_path, input_size=416, show=False, CLASSES=YOLO_COCO_CLASSES, score_threshold=0.3, iou_threshold=0.45, rectangle_colors=''):
     global centroid
     times = []
@@ -294,12 +302,14 @@ def detect_video(YoloV3, video_path, output_path, input_size=416, show=False, CL
 
         for combo in rectangle_combo_list:
             # print('combo : ', combo)
-            distance = ((combo[1][0] - combo[0][0])**2 + (combo[1][1] - combo[0][0])**2)**0.5
+            distance,coord = ((combo[1][0] - combo[0][0])**2 + (combo[1][1] - combo[0][0])**2)**0.5
             print('distance : > ', distance)
 
             # image = cv2.putText(image, "Time: {:.2f}ms".format(sum(times)/len(times)*1000), (0, 30),
             #                   cv2.FONT_HERSHEY_COMPLEX_SMALL, 1, (0, 0, 255), 2)
             if (distance < 300) : 
+                image = cv2.putText(image, "VIOLATION", (0, 30),
+                              cv2.FONT_HERSHEY_COMPLEX_SMALL, 1, (0, 0, 255), 2)
                 print('VIOLATION!!!!!!')
 
         if output_path != '': out.write(image)
