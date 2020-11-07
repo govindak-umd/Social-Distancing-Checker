@@ -16,6 +16,11 @@ import numpy as np
 import tensorflow as tf
 from yolov3.configs import *
 import matplotlib.pyplot as plt
+
+from itertools import combinations 
+
+centroid = [] #a list of all the centroids of all the rectangles in the frame
+
 def load_yolo_weights(model, weights_file):
     tf.keras.backend.clear_session() # used to reset layer names
     # load Darknet original weights to Keras model
@@ -97,7 +102,9 @@ def image_preprocess(image, target_size, gt_boxes=None):
         return image_paded, gt_boxes
 
 
+            
 def draw_bbox(image, bboxes, CLASSES=YOLO_COCO_CLASSES, show_label=True, show_confidence = True, Text_colors=(255,255,0), rectangle_colors=''):   
+    global centroid
     NUM_CLASS = read_class_names(CLASSES)
     num_classes = len(NUM_CLASS)
     image_h, image_w, _ = image.shape
@@ -111,6 +118,9 @@ def draw_bbox(image, bboxes, CLASSES=YOLO_COCO_CLASSES, show_label=True, show_co
     random.seed(None)
 
     for i, bbox in enumerate(bboxes):
+
+        
+
         coor = np.array(bbox[:4], dtype=np.int32)
         score = bbox[4]
         class_ind = int(bbox[5])
@@ -123,7 +133,7 @@ def draw_bbox(image, bboxes, CLASSES=YOLO_COCO_CLASSES, show_label=True, show_co
 
         # put object rectangle
         cv2.rectangle(image, (x1, y1), (x2, y2), bbox_color, bbox_thick*2)
-
+        centroid.append((((x1+x2)/2),((y1+y2)/2))) #appending to the list of centroids
         if show_label:
             # get text label
             #score_str = f' {score:.2f}' if show_confidence else ''
@@ -140,7 +150,6 @@ def draw_bbox(image, bboxes, CLASSES=YOLO_COCO_CLASSES, show_label=True, show_co
             # put text above rectangle
             cv2.putText(image, label, (x1, y1-4), cv2.FONT_HERSHEY_COMPLEX_SMALL,
                         fontScale, Text_colors, bbox_thick, lineType=cv2.LINE_AA)
-
     return image
 
 
@@ -271,7 +280,21 @@ def detect_image(YoloV3, image_path, output_path, input_size=416, show=False, CL
         
     return image
 
+def calculate_distance(centroid_list):
+    print('centroid_list : ',centroid_list)
+    if len(centroid_list)==1:
+        pass
+    else:
+        rectangle_combo_list  = list(combinations(centroid,2))
+        for combo in rectangle_combo_list:
+            print('combo : ', combo)
+            distance = ((combo[1][0] - combo[0][0])**2 + (combo[1][1] - combo[0][0])**2)**0.5
+            print('distance : > ', distance)
+        print('-------')
+        print(rectangle_combo_list)
+
 def detect_video(YoloV3, video_path, output_path, input_size=416, show=False, CLASSES=YOLO_COCO_CLASSES, score_threshold=0.3, iou_threshold=0.45, rectangle_colors=''):
+    global centroid
     times = []
     vid = cv2.VideoCapture(video_path)
 
@@ -307,8 +330,8 @@ def detect_video(YoloV3, video_path, output_path, input_size=416, show=False, CL
         times.append(t2-t1)
         times = times[-20:]
         print("Time: {:.2f}ms".format(sum(times)/len(times)*1000))
-
         image = draw_bbox(original_image, bboxes, CLASSES=CLASSES, rectangle_colors=rectangle_colors)
+        calculate_distance(centroid)
         image = cv2.putText(image, "Time: {:.2f}ms".format(sum(times)/len(times)*1000), (0, 30),
                           cv2.FONT_HERSHEY_COMPLEX_SMALL, 1, (0, 0, 255), 2)
 
@@ -318,6 +341,7 @@ def detect_video(YoloV3, video_path, output_path, input_size=416, show=False, CL
             if cv2.waitKey(25) & 0xFF == ord("q"):
                 cv2.destroyAllWindows()
                 break
+        centroid = []
         count+=1
     cv2.destroyAllWindows()
 
