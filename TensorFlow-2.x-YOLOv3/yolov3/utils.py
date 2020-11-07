@@ -303,12 +303,15 @@ def detect_video(YoloV3, video_path, output_path, input_size=416, show=False, CL
         for combo in rectangle_combo_list:
             # print('combo : ', combo)
             distance = ((combo[1][0] - combo[0][0])**2 + (combo[1][1] - combo[0][0])**2)**0.5
+            distance = int(distance)
             print('distance : > ', distance)
+            #FOR DISTANCE LESS THAT 300 WHEN COVID MIGHT BE TRANSMITTED
             if (distance < 300) : 
-                print(combo)
-                # image = cv2.putText(image, "VIOLATION", (0, 30),
-                #               cv2.FONT_HERSHEY_COMPLEX_SMALL, 1, (0, 0, 255), 2)
-                print('VIOLATION!!!!!!')
+                for every_instance in combo:
+                    image = cv2.putText(image, "VIOLATION", every_instance,
+                                  cv2.FONT_HERSHEY_COMPLEX_SMALL, 2, (0, 0, 255), 2)
+                    image = cv2.line(image, every_instance[0], every_instance[1], (0, 0, 255), 2)
+                    print('VIOLATION!!!!!!')
 
         if output_path != '': out.write(image)
         if show:
