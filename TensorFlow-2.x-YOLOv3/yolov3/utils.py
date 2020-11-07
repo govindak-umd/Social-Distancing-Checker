@@ -286,12 +286,7 @@ def calculate_distance(centroid_list):
         pass
     else:
         rectangle_combo_list  = list(combinations(centroid,2))
-        for combo in rectangle_combo_list:
-            print('combo : ', combo)
-            distance = ((combo[1][0] - combo[0][0])**2 + (combo[1][1] - combo[0][0])**2)**0.5
-            print('distance : > ', distance)
-        print('-------')
-        print(rectangle_combo_list)
+        return rectangle_combo_list
 
 def detect_video(YoloV3, video_path, output_path, input_size=416, show=False, CLASSES=YOLO_COCO_CLASSES, score_threshold=0.3, iou_threshold=0.45, rectangle_colors=''):
     global centroid
@@ -331,9 +326,17 @@ def detect_video(YoloV3, video_path, output_path, input_size=416, show=False, CL
         times = times[-20:]
         print("Time: {:.2f}ms".format(sum(times)/len(times)*1000))
         image = draw_bbox(original_image, bboxes, CLASSES=CLASSES, rectangle_colors=rectangle_colors)
-        calculate_distance(centroid)
-        image = cv2.putText(image, "Time: {:.2f}ms".format(sum(times)/len(times)*1000), (0, 30),
-                          cv2.FONT_HERSHEY_COMPLEX_SMALL, 1, (0, 0, 255), 2)
+        rectangle_combo_list = calculate_distance(centroid)
+
+        for combo in rectangle_combo_list:
+            # print('combo : ', combo)
+            distance = ((combo[1][0] - combo[0][0])**2 + (combo[1][1] - combo[0][0])**2)**0.5
+            print('distance : > ', distance)
+
+            image = cv2.putText(image, "Time: {:.2f}ms".format(sum(times)/len(times)*1000), (0, 30),
+                              cv2.FONT_HERSHEY_COMPLEX_SMALL, 1, (0, 0, 255), 2)
+            if (distance < 300) : 
+                print('VIOLATION!!!!!!')
 
         if output_path != '': out.write(image)
         if show:
