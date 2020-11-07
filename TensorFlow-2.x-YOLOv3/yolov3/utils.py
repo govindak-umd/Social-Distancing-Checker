@@ -252,42 +252,6 @@ def postprocess_boxes(pred_bbox, original_image, input_size, score_threshold):
 
     return np.concatenate([coors, scores[:, np.newaxis], classes[:, np.newaxis]], axis=-1)
 
-
-def detect_image(YoloV3, image_path, output_path, input_size=416, show=False, CLASSES=YOLO_COCO_CLASSES, score_threshold=0.3, iou_threshold=0.45, rectangle_colors=''):
-    original_image      = cv2.imread(image_path)
-    original_image      = cv2.cvtColor(original_image, cv2.COLOR_BGR2RGB)
-    original_image      = cv2.cvtColor(original_image, cv2.COLOR_BGR2RGB)
-
-    image_data = image_preprocess(np.copy(original_image), [input_size, input_size])
-    image_data = tf.expand_dims(image_data, 0)
-
-    pred_bbox = YoloV3.predict(image_data)
-    pred_bbox = [tf.reshape(x, (-1, tf.shape(x)[-1])) for x in pred_bbox]
-    pred_bbox = tf.concat(pred_bbox, axis=0)
-    
-    bboxes = postprocess_boxes(pred_bbox, original_image, input_size, score_threshold)
-    bboxes = nms(bboxes, iou_threshold, method='nms')
-
-    image = draw_bbox(original_image, bboxes, CLASSES=CLASSES, rectangle_colors=rectangle_colors)
-
-    if output_path != '': cv2.imwrite(output_path, image)
-    if show:
-        # plt.imshow("predicted image", image)
-        cv2.imshow("predicted image", image)
-        if cv2.waitKey(25) & 0xFF == ord("q"):
-            cv2.destroyAllWindows()
-            return
-        
-    return image
-
-def calculate_distance(centroid_list):
-    print('centroid_list : ',centroid_list)
-    if len(centroid_list)==1:
-        pass
-    else:
-        rectangle_combo_list  = list(combinations(centroid,2))
-        return rectangle_combo_list
-
 def detect_video(YoloV3, video_path, output_path, input_size=416, show=False, CLASSES=YOLO_COCO_CLASSES, score_threshold=0.3, iou_threshold=0.45, rectangle_colors=''):
     global centroid
     times = []
@@ -333,8 +297,8 @@ def detect_video(YoloV3, video_path, output_path, input_size=416, show=False, CL
             distance = ((combo[1][0] - combo[0][0])**2 + (combo[1][1] - combo[0][0])**2)**0.5
             print('distance : > ', distance)
 
-            image = cv2.putText(image, "Time: {:.2f}ms".format(sum(times)/len(times)*1000), (0, 30),
-                              cv2.FONT_HERSHEY_COMPLEX_SMALL, 1, (0, 0, 255), 2)
+            # image = cv2.putText(image, "Time: {:.2f}ms".format(sum(times)/len(times)*1000), (0, 30),
+            #                   cv2.FONT_HERSHEY_COMPLEX_SMALL, 1, (0, 0, 255), 2)
             if (distance < 300) : 
                 print('VIOLATION!!!!!!')
 
@@ -346,54 +310,4 @@ def detect_video(YoloV3, video_path, output_path, input_size=416, show=False, CL
                 break
         centroid = []
         count+=1
-    cv2.destroyAllWindows()
-
-# detect from webcam
-def detect_realtime(YoloV3, output_path, input_size=416, show=False, CLASSES=YOLO_COCO_CLASSES, score_threshold=0.3, iou_threshold=0.45, rectangle_colors=''):
-    times = []
-    vid = cv2.VideoCapture(0)
-
-    # by default VideoCapture returns float instead of int
-    width = int(vid.get(cv2.CAP_PROP_FRAME_WIDTH))
-    height = int(vid.get(cv2.CAP_PROP_FRAME_HEIGHT))
-    fps = int(vid.get(cv2.CAP_PROP_FPS))
-    codec = cv2.VideoWriter_fourcc(*'XVID')
-    out = cv2.VideoWriter(output_path, codec, fps, (width, height)) # output_path must be .mp4
-
-    while True:
-        _, frame = vid.read()
-
-        try:
-            original_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-            original_frame = cv2.cvtColor(original_frame, cv2.COLOR_BGR2RGB)
-        except:
-            break
-        image_frame = image_preprocess(np.copy(original_frame), [input_size, input_size])
-        image_frame = tf.expand_dims(image_frame, 0)
-        
-        t1 = time.time()
-        pred_bbox = YoloV3.predict(image_frame)
-        t2 = time.time()
-        
-        pred_bbox = [tf.reshape(x, (-1, tf.shape(x)[-1])) for x in pred_bbox]
-        pred_bbox = tf.concat(pred_bbox, axis=0)
-
-        bboxes = postprocess_boxes(pred_bbox, original_frame, input_size, score_threshold)
-        bboxes = nms(bboxes, iou_threshold, method='nms')
-        
-        times.append(t2-t1)
-        times = times[-20:]
-        print("Time: {:.2f}ms".format(sum(times)/len(times)*1000))
-
-        frame = draw_bbox(original_frame, bboxes, CLASSES=CLASSES, rectangle_colors=rectangle_colors)
-        frame = cv2.putText(frame, "Time: {:.2f}ms".format(sum(times)/len(times)*1000), (0, 30),
-                          cv2.FONT_HERSHEY_COMPLEX_SMALL, 1, (0, 0, 255), 2)
-
-        if output_path != '': out.write(frame)
-        if show:
-            cv2.imshow('output', frame)
-            if cv2.waitKey(25) & 0xFF == ord("q"):
-                cv2.destroyAllWindows()
-                break
-
     cv2.destroyAllWindows()
