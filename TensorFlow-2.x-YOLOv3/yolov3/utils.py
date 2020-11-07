@@ -302,7 +302,7 @@ def detect_video(YoloV3, video_path, output_path, input_size=416, show=False, CL
 
         for combo in rectangle_combo_list:
             # print('combo : ', combo)
-            distance,coord = ((combo[1][0] - combo[0][0])**2 + (combo[1][1] - combo[0][0])**2)**0.5
+            distance = ((combo[1][0] - combo[0][0])**2 + (combo[1][1] - combo[0][0])**2)**0.5
             print('distance : > ', distance)
             if (distance < 300) : 
                 print(combo)
