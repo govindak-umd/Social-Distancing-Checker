@@ -29,7 +29,7 @@ Please ensure the following packages are installed:
 ## For using your own Custom Dataset:
 
 
-Clone https://github.com/tzutalin/labelImg
+Clone [this repository](https://github.com/tzutalin/labelImg) to download the labelImg software which enables you to build custom dataset.
 
 Prerequisites for this
 
@@ -96,6 +96,14 @@ Check the graphs using : `tensorboard --logdir=log`
 
 I am working on improving the training weights. The entire project will be linked here when the weights are retrained.</br>
 For now, you can find the [download here](https://drive.google.com/file/d/1eMx6QdkupcESgp3kGyUqns2y0M5iAJev/view?usp=sharing).
+
+Make sure the directory structure is as follows: 
+
+    Social Distancing
+    |_labelimg
+    |_startdt_data (as explained above)
+    |_Tensorflow_Folder_that_you_just_downloaded
+    |_vbb2voc.py
 
 ## Credits
 
