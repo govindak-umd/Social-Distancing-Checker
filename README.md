@@ -8,7 +8,7 @@ This programme checks for social distancing between pedestrians in a COVID-ridde
 
  - Govind Ajith Kumar
 
-## Device and major softwares
+## Device and OS
 
  - The code was developed on a 2019 Razer Blade 15 .</br>
  - Windows 10
