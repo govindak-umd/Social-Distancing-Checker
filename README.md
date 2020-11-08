@@ -6,7 +6,7 @@ This programme checks for social distancing between pedestrians in a COVID-ridde
 
 ## Author
 
- - Govind Ajithkumar
+ - Govind Ajith Kumar
  
 ## For using your own Custom Dataset:
 
@@ -21,7 +21,7 @@ Prerequisites for this
 
 Execute using 
 
-('python labelImg.py')
+`)python labelImg.py`)
 
 ## For using the Caltech dataset:
 
@@ -43,7 +43,7 @@ Create a directory structure in the format
       .
         <contains all the .seq files>
 
-run python vbb2voc.py
+run (`python vbb2voc.py`)
 
 The above code generated xml files in startdt_data\caltech_pedestrian_dataset\annotations\set01 and extracts the jpeg images from .seq and pastes them into /caltech_pedestrian_dataset/set01/frame
 
