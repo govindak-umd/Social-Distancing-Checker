@@ -26,7 +26,7 @@ Please ensure the following packages are installed:
  - Tensorflow 2.3.1 (GPU Version for faster training)
  - CUDA 10.1
  - cudnn v7.6.5 for cuda 10.1
-## For using your own Custom Dataset:
+## Training your own Custom Dataset
 
 
 Clone [this repository](https://github.com/tzutalin/labelImg) to download the labelImg software which enables you to build custom dataset.
@@ -41,7 +41,7 @@ Execute using
 
 `python labelImg.py`
 
-## For using the Caltech dataset:
+## Training using the Caltech Pedestrian Dataset
 
 Download dataset from : http://www.vision.caltech.edu/Image_Datasets/CaltechPedestrians/
 
