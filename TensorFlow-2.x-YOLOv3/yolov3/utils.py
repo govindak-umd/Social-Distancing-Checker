@@ -298,23 +298,26 @@ def detect_video(YoloV3, video_path, output_path, input_size=416, show=False, CL
         times = times[-20:]
         print("Time: {:.2f}ms".format(sum(times)/len(times)*1000))
         image = draw_bbox(original_image, bboxes, CLASSES=CLASSES, rectangle_colors=rectangle_colors)
-        rectangle_combo_list = returnCombo(centroid)
+        try:
+            rectangle_combo_list = returnCombo(centroid)
 
-        for combo in rectangle_combo_list:
-            # print('combo : ', combo)
-            distance = ((combo[1][0] - combo[0][0])**2 + (combo[1][1] - combo[0][1])**2)**0.5
-            distance = int(distance)
-            for i in combo:
-                image = cv2.circle(image,i, 5, (0,255,0), -1)
-            print('distance : > ', distance)
-            #FOR DISTANCE LESS THAT 300 WHEN COVID MIGHT BE TRANSMITTED
-            if (distance < 170) : 
-                print(combo)
-                    # image = cv2.putText(image, "VIOLATION", every_instance,cv2.FONT_HERSHEY_COMPLEX_SMALL, 2, (0, 0, 255), 2)
-                image = cv2.line(image, combo[0], combo[1], (0, 0, 255), 3)
-                image = cv2.putText(image, "VIOLATION DETECTED!!", (0, 30),
-                          cv2.FONT_HERSHEY_COMPLEX_SMALL, 2, (0, 0, 255), 2)
-                print('VIOLATION!!!!!!')
+            for combo in rectangle_combo_list:
+                # print('combo : ', combo)
+                distance = ((combo[1][0] - combo[0][0])**2 + (combo[1][1] - combo[0][1])**2)**0.5
+                distance = int(distance)
+                for i in combo:
+                    image = cv2.circle(image,i, 5, (0,255,0), -1)
+                print('distance : > ', distance)
+                #FOR DISTANCE LESS THAT 300 WHEN COVID MIGHT BE TRANSMITTED
+                if (distance < 170) : 
+                    print(combo)
+                        # image = cv2.putText(image, "VIOLATION", every_instance,cv2.FONT_HERSHEY_COMPLEX_SMALL, 2, (0, 0, 255), 2)
+                    image = cv2.line(image, combo[0], combo[1], (0, 0, 255), 3)
+                    image = cv2.putText(image, "VIOLATION DETECTED!!", (0, 30),
+                              cv2.FONT_HERSHEY_COMPLEX_SMALL, 2, (0, 0, 255), 2)
+                    print('VIOLATION!!!!!!')
+        except:
+            pass
 
         if output_path != '': out.write(image)
         if show:
