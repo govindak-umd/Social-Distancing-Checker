@@ -21,7 +21,7 @@ Prerequisites for this
 
 Execute using 
 
-`)python labelImg.py`)
+`python labelImg.py`
 
 ## For using the Caltech dataset:
 
@@ -43,7 +43,7 @@ Create a directory structure in the format
       .
         <contains all the .seq files>
 
-run (`python vbb2voc.py`)
+run `python vbb2voc.py`
 
 The above code generated xml files in startdt_data\caltech_pedestrian_dataset\annotations\set01 and extracts the jpeg images from .seq and pastes them into /caltech_pedestrian_dataset/set01/frame
 
@@ -59,22 +59,24 @@ This Creates 3 text files under the Text_Files folder
 
 Change necessary configurations by setting up configs.py
 
-Run train.py
+Run `train.py`
 
 Visualize results on Video
 --
 
-Run on Custom video by inserting the video in path and run the detection file
+Run on Custom video by inserting the video in path and run the detection file. Tested on [this video](https://www.youtube.com/watch?v=GJNjaRJWVP8).
 
-Run detection_custom.py
+Run `detection_custom.py`
 
 Checking Tensorflow graphs
 --
 
-Check the graphs using : tensorboard --logdir=log
+Check the graphs using : `tensorboard --logdir=log`
 
 
-## Current status : I am working on improving the training weights.
+## Current status 
+
+`I am working on improving the training weights.`
 
 ## Credits
 
