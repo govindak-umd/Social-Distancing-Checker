@@ -68,7 +68,6 @@ The above code generated xml files in startdt_data\caltech_pedestrian_dataset\an
 I've saved in XML filetype.
 
 Switch to tools folder
---
 
 Execute XML_to_YOLOv3.py
 --
