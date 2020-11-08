@@ -7,7 +7,18 @@ This programme checks for social distancing between pedestrians in a COVID-ridde
 ## Author
 
  - Govind Ajith Kumar
- 
+
+## Device and major softwares
+
+ - The code was developed on a 2019 Razer Blade 15 .</br>
+ - Windows 10
+
+Please ensure the following packages are installed:
+--
+
+ - Tensorflow 2.3.1 (GPU Version for faster training)
+ - CUDA 10.1
+ - cudnn v7.6.5 for cuda 10.1
 ## For using your own Custom Dataset:
 
 
@@ -76,7 +87,7 @@ Check the graphs using : `tensorboard --logdir=log`
 
 ## Current status 
 
-`I am working on improving the training weights.`
+`I am working on improving the training weights. The entire project will be linked here when the weights are retrained`
 
 ## Credits
 
