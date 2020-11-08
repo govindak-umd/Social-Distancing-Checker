@@ -4,6 +4,13 @@
 
 This programme checks for social distancing between pedestrians in a COVID-ridden world.
 
+
+Ackermann Steering
+
+<p align="center">
+  <img height="500" src="images/social_distancing_gif.gif">
+</p>
+
 ## Author
 
  - Govind Ajith Kumar
