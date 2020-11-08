@@ -133,7 +133,7 @@ def draw_bbox(image, bboxes, CLASSES=YOLO_COCO_CLASSES, show_label=True, show_co
 
         # put object rectangle
         cv2.rectangle(image, (x1, y1), (x2, y2), bbox_color, bbox_thick*2)
-        centroid.append((((x1+x2)/2),((y1+y2)/2))) #appending to the list of centroids
+        centroid.append((int((x1+x2)/2),int((y1+y2)/2))) #appending to the list of centroids
         if show_label:
             # get text label
             #score_str = f' {score:.2f}' if show_confidence else ''
@@ -304,11 +304,16 @@ def detect_video(YoloV3, video_path, output_path, input_size=416, show=False, CL
             # print('combo : ', combo)
             distance = ((combo[1][0] - combo[0][0])**2 + (combo[1][1] - combo[0][0])**2)**0.5
             distance = int(distance)
+            for i in combo:
+                image = cv2.circle(image,i, 5, (0,255,0), -1)
             print('distance : > ', distance)
             #FOR DISTANCE LESS THAT 300 WHEN COVID MIGHT BE TRANSMITTED
-            if (distance < 300) : 
+            if (distance < 170) : 
+                print(combo)
                     # image = cv2.putText(image, "VIOLATION", every_instance,cv2.FONT_HERSHEY_COMPLEX_SMALL, 2, (0, 0, 255), 2)
-                image = cv2.line(image, combo[0], combo[1], (0, 0, 255), 2)
+                image = cv2.line(image, combo[0], combo[1], (0, 0, 255), 3)
+                image = cv2.putText(image, "VIOLATION DETECTED!!", (0, 30),
+                          cv2.FONT_HERSHEY_COMPLEX_SMALL, 1, (0, 0, 255), 2)
                 print('VIOLATION!!!!!!')
 
         if output_path != '': out.write(image)
