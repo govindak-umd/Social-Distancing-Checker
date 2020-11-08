@@ -252,7 +252,7 @@ def postprocess_boxes(pred_bbox, original_image, input_size, score_threshold):
 
     return np.concatenate([coors, scores[:, np.newaxis], classes[:, np.newaxis]], axis=-1)
 
-def calculate_distance(centroid_list):
+def returnCombo(centroid_list):
     print('centroid_list : ',centroid_list)
     if len(centroid_list)==1:
         pass
@@ -298,11 +298,11 @@ def detect_video(YoloV3, video_path, output_path, input_size=416, show=False, CL
         times = times[-20:]
         print("Time: {:.2f}ms".format(sum(times)/len(times)*1000))
         image = draw_bbox(original_image, bboxes, CLASSES=CLASSES, rectangle_colors=rectangle_colors)
-        rectangle_combo_list = calculate_distance(centroid)
+        rectangle_combo_list = returnCombo(centroid)
 
         for combo in rectangle_combo_list:
             # print('combo : ', combo)
-            distance = ((combo[1][0] - combo[0][0])**2 + (combo[1][1] - combo[0][0])**2)**0.5
+            distance = ((combo[1][0] - combo[0][0])**2 + (combo[1][1] - combo[0][1])**2)**0.5
             distance = int(distance)
             for i in combo:
                 image = cv2.circle(image,i, 5, (0,255,0), -1)
@@ -313,7 +313,7 @@ def detect_video(YoloV3, video_path, output_path, input_size=416, show=False, CL
                     # image = cv2.putText(image, "VIOLATION", every_instance,cv2.FONT_HERSHEY_COMPLEX_SMALL, 2, (0, 0, 255), 2)
                 image = cv2.line(image, combo[0], combo[1], (0, 0, 255), 3)
                 image = cv2.putText(image, "VIOLATION DETECTED!!", (0, 30),
-                          cv2.FONT_HERSHEY_COMPLEX_SMALL, 1, (0, 0, 255), 2)
+                          cv2.FONT_HERSHEY_COMPLEX_SMALL, 2, (0, 0, 255), 2)
                 print('VIOLATION!!!!!!')
 
         if output_path != '': out.write(image)
