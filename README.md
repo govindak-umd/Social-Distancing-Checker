@@ -43,7 +43,7 @@ Execute using
 
 ## Training using the Caltech Pedestrian Dataset
 
-Download dataset from : http://www.vision.caltech.edu/Image_Datasets/CaltechPedestrians/
+Download dataset from Caltech's website [here](http://www.vision.caltech.edu/Image_Datasets/CaltechPedestrians/).
 
 Create a directory structure in the format
 --
@@ -107,5 +107,5 @@ Make sure the directory structure is as follows:
 
 ## Credits
 
-The YOLOV3 repository was inspried and drawn from the work done [here] (https://github.com/pythonlessons/TensorFlow-2.x-YOLOv3).</br>
+The YOLOV3 repository was inspried and drawn from the work done [here](https://github.com/pythonlessons/TensorFlow-2.x-YOLOv3).</br>
 Thanks to [this](https://github.com/Ashwini-Analytics/Pedestrian-Detection-using-Darkflow) and [this](https://github.com/CasiaFan/Dataset_to_VOC_converter) repository for the vbb2voc file.
