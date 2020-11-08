@@ -8,7 +8,7 @@ This programme checks for social distancing between pedestrians in a COVID-ridde
 Ackermann Steering
 
 <p align="center">
-  <img height="500" src="images/social_distancing_gif.gif">
+  <img height="500" src="Images/social_distancing_gif.gif">
 </p>
 
 ## Author
