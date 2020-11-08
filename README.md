@@ -2,8 +2,12 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-This programme is intended to check for social distancing among pedestrians
+This programme checks for social distancing between pedestrians in a COVID-ridden world.
 
+## Author
+
+ - Govind Ajithkumar
+ 
 ## For using your own Custom Dataset:
 
 
@@ -15,7 +19,9 @@ Prerequisites for this
     pyrcc5 -o resources.py resources.qrc
     Transfer resources.py and resources.qrc into the resources folder
 
-Execute using python labelImg.py
+Execute using 
+
+('python labelImg.py')
 
 ## For using the Caltech dataset:
 
@@ -53,9 +59,24 @@ This Creates 3 text files under the Text_Files folder
 
 Change necessary configurations by setting up configs.py
 
-Run train.py  
+Run train.py
+
+Visualize results on Video
+--
+
+Run on Custom video by inserting the video in path and run the detection file
+
+Run detection_custom.py
 
 Checking Tensorflow graphs
 --
 
 Check the graphs using : tensorboard --logdir=log
+
+
+## Current status : I am working on improving the training weights.
+
+## Credits
+
+The YOLOV3 repository was inspried and drawn from the work done [here] (https://github.com/pythonlessons/TensorFlow-2.x-YOLOv3).</br>
+Thanks to [this](https://github.com/Ashwini-Analytics/Pedestrian-Detection-using-Darkflow) and [this](https://github.com/CasiaFan/Dataset_to_VOC_converter) repository for the vbb2voc file.
