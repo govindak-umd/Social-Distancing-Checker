@@ -87,7 +87,8 @@ Check the graphs using : `tensorboard --logdir=log`
 
 ## Current status 
 
-`I am working on improving the training weights. The entire project will be linked here when the weights are retrained`
+I am working on improving the training weights. The entire project will be linked here when the weights are retrained.</br>
+For now, you can find the [download here](https://drive.google.com/file/d/1eMx6QdkupcESgp3kGyUqns2y0M5iAJev/view?usp=sharing).
 
 ## Credits
 
