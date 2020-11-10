@@ -1,3 +1,13 @@
+#================================================================
+#
+#   File name   : utils.py
+#   Author      : PyLessons
+#   Created date: 2020-06-04
+#   Website     : https://pylessons.com/
+#   GitHub      : https://github.com/pythonlessons/TensorFlow-2.x-YOLOv3
+#   Description : additional yolov3 functions
+#
+#================================================================
 import cv2
 import time
 import random
@@ -109,8 +119,6 @@ def draw_bbox(image, bboxes, CLASSES=YOLO_COCO_CLASSES, show_label=True, show_co
 
     for i, bbox in enumerate(bboxes):
 
-        
-
         coor = np.array(bbox[:4], dtype=np.int32)
         score = bbox[4]
         class_ind = int(bbox[5])
@@ -122,24 +130,30 @@ def draw_bbox(image, bboxes, CLASSES=YOLO_COCO_CLASSES, show_label=True, show_co
         (x1, y1), (x2, y2) = (coor[0], coor[1]), (coor[2], coor[3])
 
         # put object rectangle
-        cv2.rectangle(image, (x1, y1), (x2, y2), bbox_color, bbox_thick*2)
-        centroid.append((int((x1+x2)/2),int((y1+y2)/2))) #appending to the list of centroids
+        # cv2.rectangle(image, (x1, y1), (x2, y2), bbox_color, bbox_thick*2)
+        # centroid.append((int((x1+x2)/2),int((y1+y2)/2))) #appending to the list of centroids
         if show_label:
             # get text label
             #score_str = f' {score:.2f}' if show_confidence else ''
             score_str = " {:.2f}".format(score) if show_confidence else "" 
-            #label = f'{NUM_CLASS[class_ind]}' + score_str
-            label = "{}".format(NUM_CLASS[class_ind]) + score_str
+            # print(score_str)
+            # print(type(score_str))
+            if (float(score_str) > 0.45):
+                cv2.rectangle(image, (x1, y1), (x2, y2), bbox_color, bbox_thick*2)
+                centroid.append((int((x1+x2)/2),int((y1+y2)/2))) #appending to the list of centroids
+                #label = f'{NUM_CLASS[class_ind]}' + score_str
+                label = "{}".format(NUM_CLASS[class_ind]) + score_str
 
-            # get text size
-            (text_width, text_height), baseline = cv2.getTextSize(label, cv2.FONT_HERSHEY_COMPLEX_SMALL,
-                                                                  fontScale, thickness=bbox_thick)
-            # put filled text rectangle
-            cv2.rectangle(image, (x1, y1), (x1 + text_width, y1 - text_height - baseline), bbox_color, thickness=cv2.FILLED)
+                # get text size
+                (text_width, text_height), baseline = cv2.getTextSize(label, cv2.FONT_HERSHEY_COMPLEX_SMALL,
+                                                                      fontScale, thickness=bbox_thick)
+                # put filled text rectangle
+                cv2.rectangle(image, (x1, y1), (x1 + text_width, y1 - text_height - baseline), bbox_color, thickness=cv2.FILLED)
 
-            # put text above rectangle
-            cv2.putText(image, label, (x1, y1-4), cv2.FONT_HERSHEY_COMPLEX_SMALL,
-                        fontScale, Text_colors, bbox_thick, lineType=cv2.LINE_AA)
+                # put text above rectangle
+                cv2.putText(image, label, (x1, y1-4), cv2.FONT_HERSHEY_COMPLEX_SMALL,
+                            fontScale, Text_colors, bbox_thick, lineType=cv2.LINE_AA)
+
     return image
 
 
@@ -296,7 +310,7 @@ def detect_video(YoloV3, video_path, output_path, input_size=416, show=False, CL
                 distance = ((combo[1][0] - combo[0][0])**2 + (combo[1][1] - combo[0][1])**2)**0.5
                 distance = int(distance)
                 for i in combo:
-                    image = cv2.circle(image,i, 5, (0,255,0), -1)
+                    image = cv2.circle(image,i, 5, (0,0,255), -1)
                 print('distance : > ', distance)
                 #FOR DISTANCE LESS THAT 300 WHEN COVID MIGHT BE TRANSMITTED
                 if (distance < 170) : 
