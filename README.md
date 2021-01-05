@@ -5,8 +5,6 @@
 This programme checks for social distancing between pedestrians in a COVID-ridden world.
 
 
-Ackermann Steering
-
 <p align="center">
   <img height="500" src="Images/social_distancing_gif.gif">
 </p>
